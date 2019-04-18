@@ -1,0 +1,26 @@
+{
+  "name": "bullet",
+  "version": "1.0.0",
+  "description": "Implementation of Bullet Journal in node, mongo, and vue",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "author": "Mike Lehmann",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "config": "^3.1.0",
+    "express": "^4.16.4",
+    "fs-extra": "^7.0.1",
+    "mongo": "^0.1.0",
+    "mongoose": "^5.4.22",
+    "pug": "^2.0.3",
+    "validator": "^10.11.0",
+    "vue": "^2.6.10"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.11"
+  }
+}

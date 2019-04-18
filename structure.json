@@ -1,0 +1,144 @@
+{
+	"openApiProperties": {
+		"version": "3.0.1",
+		"info": {
+			"title": "Bullet Journal API",
+			"description" : "REST API for Bullet Journal",
+			"version": "1.0.0-oas3",
+			"contact": {
+				"email": "lehmann314159@gmail.com"
+			}
+		},
+		"tags": [
+			{
+				"entries": "Relating to recording what's occured"
+			},
+			{
+				"meta": "Relating to the making of the sausage"
+			}
+		]
+	},
+	"mongoProperties": {
+		"serverName": "mongodb://localhost:27017",
+		"collectionName": "bullet"
+	},
+	"nodeProperties": {
+		"serverPort": "3000"
+	},
+	"modelList": [
+		{
+			"name": "Event",
+			"modelName": "event",
+			"refName": "Event",
+			"endpoint": "events",
+			"idName": "_id",
+			"idDescription": "The id of the event",
+			"idType": "number",
+			"tags": [
+				"entries"
+			],
+			"summary": "Events are time-related entries",
+			"description": "Events are time-related entries",
+			"fields": {
+				"_id": "number",
+				"entryId": "number",
+				"body": "string",
+				"timestamp": "string",
+				"signifier": "string",
+				"persistence": "string"
+			},
+			"example": {
+				"_id": "101",
+				"entryId": "901",
+				"body": "Mike's Birthday",
+				"timestamp": "2020-03-18T07:00:00Z",
+				"signifier": "",
+				"persistence":"annual"
+			}
+		},
+		{
+			"name": "Note",
+			"modelName": "note",
+			"refName": "Note",
+			"endpoint": "notes",
+			"idName": "_id",
+			"idDescription": "The id of the note",
+			"idType": "number",
+			"tags": [
+				"entries"
+			],
+			"summary": "Notes are entries that represent an idea, fact, or observation",
+			"description": "Notes are entries that represent an idea, fact, or observation",
+			"fields": {
+				"_id": "number",
+				"entryId": "number",
+				"body": "string",
+				"signifier": "string"
+			},
+			"example": {
+				"_id": "201",
+				"entryId": "901",
+				"body": "Mammals can't breathe water",
+				"signifier": "inspiration"
+			}
+		},
+		{
+			"name": "Task",
+			"modelName": "task",
+			"refName": "Task",
+			"endpoint": "tasks",
+			"idName": "_id",
+			"idDescription": "The id of the task",
+			"idType": "number",
+			"tags": [
+				"entries"
+			],
+			"summary": "Tasks are entries that represent an action taken",
+			"description": "Tasks are entries that represent an action taken",
+			"fields": {
+				"_id": "number",
+				"entryId": "number",
+				"body": "string",
+				"signifier": "string",
+				"state": "string",
+				"lastTouchTimestamp": "string"
+			},
+			"example": {
+				"_id": "301",
+				"entryId": "901",
+				"body": "Buy a cake",
+				"signifier": "priority",
+				"state": "incomplete",
+				"lastTouchTimestamp": "2019-04-12T00:00:00Z"
+			}
+		},
+		{
+			"name": "Entry",
+			"modelName": "entry",
+			"refName": "Entry",
+			"endpoint": "entries",
+			"idName": "_id",
+			"idDescription": "The id of the entry",
+			"idType": "number",
+			"tags": [
+				"entries"
+			],
+			"summary": "Structure for tasks, events, notes",
+			"description": "Structure for tasks, events, notes",
+			"fields": {
+				"_id": "number",
+				"parentId": "number",
+				"userName": "string",
+				"creationTimestamp": "string",
+				"payload": "Task|Event|Note"
+			},
+			"example": {
+				"_id": "901",
+				"parentId": "number",
+				"userName": "string",
+				"creationTimestamp": "string",
+				"payload": "Event"
+			}
+		}
+	]
+}
