@@ -34,11 +34,13 @@
 			"idName": "_id",
 			"idDescription": "The id of the event",
 			"idType": "number",
+			"displayFieldName": "body",
 			"tags": [
 				"entries"
 			],
 			"summary": "Events are time-related entries",
 			"description": "Events are time-related entries",
+			"useSoftDelete": "true",
 			"fields": {
 				"_id": "number",
 				"entryId": "number",
@@ -64,11 +66,13 @@
 			"idName": "_id",
 			"idDescription": "The id of the note",
 			"idType": "number",
+			"displayFieldName": "body",
 			"tags": [
 				"entries"
 			],
 			"summary": "Notes are entries that represent an idea, fact, or observation",
 			"description": "Notes are entries that represent an idea, fact, or observation",
+			"useSoftDelete": "true",
 			"fields": {
 				"_id": "number",
 				"entryId": "number",
@@ -90,11 +94,13 @@
 			"idName": "_id",
 			"idDescription": "The id of the task",
 			"idType": "number",
+			"displayFieldName": "body",
 			"tags": [
 				"entries"
 			],
 			"summary": "Tasks are entries that represent an action taken",
 			"description": "Tasks are entries that represent an action taken",
+			"useSoftDelete": "true",
 			"fields": {
 				"_id": "number",
 				"entryId": "number",
@@ -120,11 +126,13 @@
 			"idName": "_id",
 			"idDescription": "The id of the entry",
 			"idType": "number",
+			"displayFieldName": "_id",
 			"tags": [
 				"entries"
 			],
 			"summary": "Structure for tasks, events, notes",
 			"description": "Structure for tasks, events, notes",
+			"useSoftDelete": "true",
 			"fields": {
 				"_id": "number",
 				"parentId": "number",
