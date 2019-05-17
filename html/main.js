@@ -16,9 +16,10 @@ function setModelName(inValue) {
 }
 
 // templateList is generated and defined in models.js
-function getModelList() {
+function getModelNameList() {
 	return [...(Object.keys(templateList)).sort()];
 }
+
 
 ///////////////
 // Documents //
@@ -60,8 +61,6 @@ function getDocumentTemplate(inModelName) {
 // yes, this is recursive
 // getDocumentHeight helps us make the textarea the right size
 function getDocumentHeight(inObject) {
-	console.log('In getDocumentHeight');
-	console.log('with: ' + JSON.stringify(inObject, null, 2));
 	let count = 2; // For the 2 brackets
 
 	let childObjectList = [];
@@ -78,26 +77,6 @@ function getDocumentHeight(inObject) {
 		(childCount, currentChild) => childCount + getDocumentHeight(currentChild),
 		count
 	);
-}
-
-// templateList is generated and defined in models.js
-// yes, this is recursive
-// getDocumentDepth helps us make the textarea the right size
-function getDocumentDepth(inModelName) {
-	let myObject = getDocumentTemplate(inModelName);
-
-	let childObjectList = [];
-	for (const aChild in myObject) {
-		if (typeof(myObject[aChild]) == 'object') {
-			childObjectList.push(myObject[aChild]);
-		}
-	}
-
-	// Return our count plus the count of our object children
-	if (!childObjectList.length) {
-		return 1;
-	}
-	return Math.max(...getDocumentDepth(childObjectList)) + 1;
 }
 
 
@@ -262,17 +241,19 @@ function paint() {
 
 // Populates the Model Select
 function populateModelSelect() {
+	// clear the select boxes, document id
+	modelSelect.options.length = 0;
+	documentSelect.options.length = 0;
+
 	// Add the starter option
 	let starter = document.createElement('option');
 	starter.appendChild(document.createTextNode('Select Model'));
-
-	// Select and disable the starter
 	modelSelect.appendChild(starter);
 	modelSelect.options[0].selected = 'selected';
 	modelSelect.options[0].disabled = true;
 
 	// add each model to the select
-	for (const modelName of getModelList()) {
+	for (const modelName of getModelNameList()) {
 		let opt = document.createElement('option');
 
 		// create text node to add to option element (opt)
@@ -328,6 +309,12 @@ function populateModifyContent() {
 	modifyContent.innerHTML = (getMode() == 'CREATE')
 		? JSON.stringify(getDocumentTemplate(getModelName()), null, 2)
 		: getDocumentDetails(getDocumentId());
+
+	// Strip out _id (mongo's update method hates it, POST doesn't need it)
+	let tempObject = JSON.parse(modifyContent.value);
+	delete tempObject['_id'];
+	modifyContent.innerHTML = JSON.stringify(tempObject, null, 2);
+
 	modifyContent.rows = (getMode() == 'CREATE')
 		? getDocumentHeight(getDocumentTemplate(getModelName()))
 		: getDocumentHeight(JSON.parse(getDocumentDetails(getDocumentId())))
@@ -336,34 +323,29 @@ function populateModifyContent() {
 }
 
 
-////////////////////
-// Event Handlers //
-////////////////////
+////////////////
+// Ajax Calls //
+////////////////
 
-function makeRequest(inMethod, inEndpoint, inCallback) {
-	// Set up our HTTP request
+function makeRequest(inMethod, inEndpoint, inCallback, inData = null) {
 	xhr().onload = inCallback;
 	xhr().open(inMethod, inEndpoint);
-	xhr().send();
+	xhr().setRequestHeader("Content-Type", "application/json");
+	xhr().send(inData);
 }
 
-// Called when modelSelect changes
-function handleSetModel() {
-	// Set state
-	setModelName(modelSelect.options[modelSelect.selectedIndex].value);
-	setMode('DISPLAY');
-
-	// Clear any document that might be stored
-	setDocumentId(null);
-	displayContent.innerHTML = '';
-
-	// Make request
+function ajaxGetDocumentList() {
 	makeRequest('GET', `${backEndApiServer}/${getModelName()}`,
 		() => {
 		if (xhr().status >= 200 && xhr().status < 300) {
 			let responseList = JSON.parse(xhr().responseText);
 			setDocumentList(getModelName(),
 				responseList.map(responseList => responseList._id));
+
+			// Clear any document that might be stored
+			setDocumentId(null);
+			displayContent.innerHTML = '';
+			modifyContent.innerHTML = '';
 
 			// Enable and populate the document select
 			populateDocumentSelect(xhr().responseText);
@@ -373,12 +355,7 @@ function handleSetModel() {
 	});
 }
 
-// Called when documentSelect changes
-function handleSetDocument() {
-	// set state
-	setDocumentId(documentSelect.options[documentSelect.selectedIndex].value);
-
-	// Make request
+function ajaxGetDocumentDetails() {
 	makeRequest('GET', `${backEndApiServer}/${getModelName()}/${getDocumentId()}`,
 		() => {
 		if (xhr().status >= 200 && xhr().status < 300) {
@@ -391,27 +368,87 @@ function handleSetDocument() {
 	});
 }
 
-// Called when editButton is clicked
+function ajaxDeleteDocument() {
+	makeRequest('DELETE', `${backEndApiServer}/${getModelName()}/${getDocumentId()}`,
+		() => {
+		if (xhr().status >= 200 && xhr().status < 300) {
+			// clear the document state
+			setDocumentId(null);
+
+			// set Mode to DISPLAY and re-populate documentSelect
+			setMode('DISPLAY');
+			populateDocumentSelect();
+		} else {
+			alert('The request failed!');
+		}
+	});
+}
+
+function ajaxPostDocument() {
+	makeRequest('POST', `${backEndApiServer}/${getModelName()}`,
+		() => {
+		if (xhr().status >= 200 && xhr().status < 300) {
+			ajaxGetDocumentList(); // we added a new document to the list
+		} else {
+			alert('The request failed!');
+		}
+	}, modifyContent.value);
+}
+
+function ajaxPutDocument() {
+	makeRequest('PUT', `${backEndApiServer}/${getModelName()}/${getDocumentId()}`,
+		() => {
+		if (xhr().status >= 200 && xhr().status < 300) {
+			setDocumentDetails(getDocumentId(), modifyContent.value);
+			populateDocumentSelect();
+		} else {
+			alert('The request failed!');
+		}
+	}, modifyContent.value);
+}
+
+////////////////////
+// Event Handlers //
+////////////////////
+
+function handleSetModel() {
+	// Set state
+	setModelName(modelSelect.options[modelSelect.selectedIndex].value);
+	setMode('DISPLAY');
+
+	// Request new document list
+	ajaxGetDocumentList();
+}
+
+function handleSetDocument() {
+	// set state
+	setDocumentId(documentSelect.options[documentSelect.selectedIndex].value);
+	setMode('DISPLAY');
+
+	// Request new document details
+	ajaxGetDocumentDetails();
+}
+
 function handleEditDocument() {
 	// set state
 	setMode('EDIT');
 	populateModifyContent();
 }
 
-// TODO: Implement
-// Called when deleteButton is clicked
 function handleDeleteDocument() {
 	// set state
 	setMode('DELETE');
 
-	// delete the referenced document
+	// delete the document
+	// TODO: Obviate race condition with ajaxGetDocumentList() call below
+	// -- chained promise, maybe?
+	ajaxDeleteDocument();
 
-	// clear the document state
-	setDocumentId(null);
-
-	// set Mode to DISPLAY and re-populate documentSelect
+	// set state to display
 	setMode('DISPLAY');
-	populateDocumentSelect();
+
+	// refresh the document list
+	ajaxGetDocumentList();
 }
 
 // Called when createButton is clicked
@@ -420,25 +457,21 @@ function handleCreateDocument() {
 	setMode('CREATE');
 
 	// display selected document
-	modifyContent.innerHTML = getDocumentDetails(getDocumentId());
 	populateModifyContent();
 }
 
-// TODO: Implement
 // Called when saveButton is clicked
 function handleSaveDocument() {
-	// set state
-	setMode('SAVE');
+	// get state, set state
 
-	// save the document
-	saveDocument(modifyContent.innerHTML);
-
-	// clear the document state
-	setDocumentId(null);
-
-	// set Mode to DISPLAY and re-populate documentSelect
-	setMode('DISPLAY');
-	populateDocumentSelect();
+	// Figure out if we're updating or creating
+	if (getMode() == 'CREATE') {
+		setMode('DISPLAY');
+		ajaxPostDocument();
+	} else {
+		setMode('DISPLAY');
+		ajaxPutDocument();
+	}
 }
 
 // Called when cancelButton is clicked
@@ -453,7 +486,7 @@ function handleCancelDocument() {
 
 	// Ordinarily we'd rely on a populate method to re-paint
 	// But because we might be caneling an edit, we don't want to
-	// re-populate documentSelect.  So we'll just leabe it as-is
+	// re-populate documentSelect.  So we'll just leave it as-is
 	// and call paint() ourselves
 	setMode('DISPLAY');
 	paint();

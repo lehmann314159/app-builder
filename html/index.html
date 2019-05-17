@@ -7,20 +7,20 @@
 	<title>Database!</title>
 </head>
 <body>
-	<div id="navigation">
-			<select id="modelSelect" onChange="handleSetModel()"></select>
-			<select id="documentSelect" onChange="handleSetDocument()"></select>
-			<button id="createButton" onClick="handleCreateDocument()">CREATE</button>
+	<div id="navigation" style="display:flex">
+			<select id="modelSelect" onChange="handleSetModel()" style="margin:5px"></select>
+			<select id="documentSelect" onChange="handleSetDocument()" style="margin:5px"></select>
+			<button id="createButton" onClick="handleCreateDocument()" style="margin:5px">CREATE</button>
 	</div>
 	<div id="content">
 		<pre id="displayContent"></pre>
 		<textarea id="modifyContent"></textarea>
 	</div>
-	<div id="actions">
-		<button id="editButton" onClick="handleEditDocument()">EDIT</button>
-		<button id="deleteButton" onClick="handleDeleteDocument()">DELETE</button>
-		<button id="saveButton" onClick="handleSaveDocument()">SAVE</button>
-		<button id="cancelButton" onClick="handleCancelDocument()">CANCEL</button>
+	<div id="actions" style="display:flex">
+		<button id="editButton" onClick="handleEditDocument()" style="margin:5px">EDIT</button>
+		<button id="deleteButton" onClick="handleDeleteDocument()" style="margin:5px">DELETE</button>
+		<button id="saveButton" onClick="handleSaveDocument()" style="margin:5px">SAVE</button>
+		<button id="cancelButton" onClick="handleCancelDocument()" style="margin:5px">CANCEL</button>
 	</div>
 	<script src="models.js"></script>
 	<script src="main.js"></script>
