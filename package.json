@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
 	"generateOpenApi": "node generateOpenApi.js > swagger.yml",
-	"generateNodeServer": "node generateNodeServer.js > index.js"
+	"generateNodeServer": "node generateNodeServer.js > index.js",
+	"startBackEnd": "node index.js &",
+	"startFrontEnd": "curl localhost:3000"
   },
   "repository": {
     "type": "git",
