@@ -1,3 +1,18 @@
+// The OpenApiEngine class creates an Open API yml file from a
+// structure.json file
+
+/* Because everything is machine-generated, I took the luxury
+ * of doing a ton of nesting.  I create base references, and then
+ * lists, request and responses that leverage them.
+ *
+ * One thing that I've noticed having taken a look at the code base
+ * after some time away is that the style of generating code using a
+ * series of concatentions is easier to understand than the usage of
+ * backtick operators, even if it is more cumbersome to write.  I'm
+ * not quite to the point of re-factoring that code, but I sure do
+ * notice it right now :)
+ */
+
 module.exports = class OpenApiEngine {
 	///////////////////////////////////////////////////////
 	// Determines if the passed type is a json primitive //
@@ -280,6 +295,11 @@ module.exports = class OpenApiEngine {
 		return yml;
 	}
 
+	// OpenAPI has different documentation for primitives than it does for
+	// refernces.  Rather than make the branching awkward in the sections
+	// that have to pick one or another, I decided to make a slightly awkward
+	// function, to abstract the ugly branching.  It also lets me detect
+	// "one of" behavior and just handle it here as well.
 	typeOrRef(tor, indentLevel) {
 		let yml = "";
 
@@ -302,7 +322,7 @@ module.exports = class OpenApiEngine {
 			return yml;
 		}
 
-		// Just a standard single thing
+		// Just a single primitive/model
 		if (this.isSwaggerPrimitive(tor)) {
 			yml += indent + "type: " + tor + "\n";
 		} else {

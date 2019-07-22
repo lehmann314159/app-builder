@@ -1,5 +1,7 @@
-// The Validator Class ensures that the structure file is well-formed
-// and acts as a container for it.
+// The Validator Class ensures that the structure.json file is well-formed
+// and acts as a container for it.  Even though we'll be generating this file
+// we want to make sure it's going to have a chance of being successful.
+
 module.exports = class Validator {
 	// constructor
 	constructor(inputFile) {
@@ -8,19 +10,6 @@ module.exports = class Validator {
 			this.ingest();
 		}
 	}
-
-	//////////////////////////////
-	// Gives access to the data //
-	//////////////////////////////
-	getData() {
-		// checks that data is well formed
-		if (!this.isWellFormed()) {
-			throw "data is not well formed...";
-		}
-
-		return this.data;
-	}
-
 
 	/////////////////////////////////
 	// ingest                      //
@@ -43,6 +32,19 @@ module.exports = class Validator {
 		this.data = JSON.parse(fs.readFileSync(this.inputFile));
 		return true;
 	}
+
+	//////////////////////////////
+	// Gives access to the data //
+	//////////////////////////////
+	getData() {
+		// checks that data is well formed
+		if (!this.isWellFormed()) {
+			throw "data is not well formed...";
+		}
+
+		return this.data;
+	}
+
 
 	///////////////////////////////////
 	// Sees if the data is ok to use //
