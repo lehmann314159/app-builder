@@ -4,10 +4,11 @@
   "description": "Implementation of Bullet Journal in node, mongo, and vue",
   "main": "index.js",
   "scripts": {
-	"generateOpenApi": "node generateOpenApi.js > swagger.yml",
+	"generateOpenApi":    "node generateOpenApi.js > swagger.yml",
 	"generateNodeServer": "node generateNodeServer.js > index.js",
-	"startBackEnd": "node index.js &",
-	"startFrontEnd": "curl localhost:3000"
+	"generateFrontEnd":   "node generateFrontEndModels.js > html/models.js",
+	"startBackEnd":       "node index.js &",
+	"startFrontEnd":      "curl localhost:3000"
   },
   "repository": {
     "type": "git",

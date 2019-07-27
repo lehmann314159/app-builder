@@ -14,7 +14,7 @@ Future Steps:
 * Create a tool that generates a support file for the front end
 * Create a front end tool that generates the original structure.json file
 
-To test this out (assumes a mongo server running on localhost:
+To test this out (assumes a mongo server running on localhost):
 
 `% npm install`  
 `% node run generateOpenAPI`  
