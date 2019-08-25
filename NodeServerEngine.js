@@ -24,6 +24,9 @@ const app = express();\n\
 const bodyParser = require('body-parser');\n\
 app.use(bodyParser.json());\n\
 \n\
+// the database front end is mostly static
+app.use(express.static('html'))
+\n\
 // Mongo is a document-based database\n\
 var MongoClient = require('mongodb').MongoClient;\n\
 var ObjectID = require('mongodb').ObjectID;\n\
