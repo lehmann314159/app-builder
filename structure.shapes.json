@@ -1,0 +1,104 @@
+{
+	"openApiProperties": {
+		"version": "3.0.1",
+		"info": {
+			"title": "Shapes API",
+			"description" : "REST API for Shapes",
+			"version": "1.0.0-oas3",
+			"contact": {
+				"email": "lehmann314159@gmail.com"
+			}
+		},
+		"tags": [
+			{
+				"abstract": "Relating to a type of shape"
+			},
+			{
+				"concrete": "Relating to a hydrated shape with a location"
+			}
+		]
+	},
+	"mongoProperties": {
+		"serverName": "mongodb://localhost:27017",
+		"collectionName": "shapes"
+	},
+	"nodeProperties": {
+		"serverPort": "3000"
+	},
+	"modelList": [
+		{
+			"name": "Square",
+			"modelName": "square",
+			"refName": "Square",
+			"endpoint": "squares",
+			"idName": "_id",
+			"idDescription": "The id of the square",
+			"idType": "string",
+			"displayFieldName": "_id",
+			"tags": [
+				"abstract"
+			],
+			"summary": "Squares have a length",
+			"description": "Squares have a length",
+			"useSoftDelete": "true",
+			"fields": {
+				"_id": "string",
+				"length": "number"
+			},
+			"example": {
+				"_id": "0123456789ABCDEF",
+				"length":"1.5"
+			}
+		},
+		{
+			"name": "Circle",
+			"modelName": "circle",
+			"refName": "Circle",
+			"endpoint": "circles",
+			"idName": "_id",
+			"idDescription": "The id of the circle",
+			"idType": "number",
+			"displayFieldName": "_id",
+			"tags": [
+				"abstract"
+			],
+			"summary": "Circles have a radius",
+			"description": "Circles have a radius",
+			"useSoftDelete": "true",
+			"fields": {
+				"_id": "string",
+				"length": "number"
+			},
+			"example": {
+				"_id": "0123456789ABCDF0",
+				"radius":"1.5"
+			}
+		},
+		{
+			"name": "Concreteshape",
+			"modelName": "concreteshape",
+			"refName": "Concreteshape",
+			"endpoint": "concreteshapes",
+			"idName": "_id",
+			"idDescription": "The id of the concreteshape",
+			"idType": "string",
+			"displayFieldName": "label",
+			"tags": [
+				"concrete"
+			],
+			"summary": "concreteshapes have a position, label, and an abstract shape",
+			"description": "concreteshapes have a position, label, and an abstract shape",
+			"useSoftDelete": "true",
+			"fields": {
+				"_id": "string",
+				"label": "string",
+				"position": "5.0",
+				"abstractshape": "Square|Circle"
+			},
+			"example": {
+				"_id": "0123456789ABCDF1",
+				"radius":"1.5"
+			}
+		}
+	]
+}

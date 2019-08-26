@@ -1,0 +1,48 @@
+{
+	"openApiProperties": {
+		"version": "3.0.1",
+		"info": {
+			"title": "",
+			"description" : "",
+			"version": "1.0.0-oas3",
+			"contact": {
+				"email": "lehmann314159@gmail.com"
+			}
+		},
+		"tags": [
+			{
+				"": ""
+			}
+		]
+	},
+	"mongoProperties": {
+		"serverName": "mongodb://localhost:27017",
+		"collectionName": ""
+	},
+	"nodeProperties": {
+		"serverPort": "3000"
+	},
+	"modelList": [
+		{
+			"name": "Model",
+			"modelName": "model",
+			"refName": "Model",
+			"endpoint": "models",
+			"idName": "_id",
+			"idDescription": "The id of the event",
+			"idType": "number",
+			"displayFieldName": "",
+			"tags": [
+			],
+			"summary": "",
+			"description": "",
+			"useSoftDelete": "true",
+			"fields": {
+				"_id": "number"
+			},
+			"example": {
+				"_id": "101"
+			}
+		}
+	]
+}
