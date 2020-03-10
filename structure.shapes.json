@@ -67,7 +67,7 @@
 			"useSoftDelete": "true",
 			"fields": {
 				"_id": "string",
-				"length": "number"
+				"radius": "number"
 			},
 			"example": {
 				"_id": "0123456789ABCDF0",

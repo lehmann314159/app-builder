@@ -16,8 +16,8 @@ Future Steps:
 
 To test this out (assumes a mongo server running on localhost):
 
-`% npm install`  
-`% node run generateOpenAPI`  
-`% node run generateNodeServer`  
-`% node run startBackEnd`  
-`% node run startFrontEnd`  
+`% npm install`
+`% npm run generateOpenApi`
+`% npm run generateNodeServer`
+`% npm run startBackEnd &`
+`% npm run startFrontEnd`
