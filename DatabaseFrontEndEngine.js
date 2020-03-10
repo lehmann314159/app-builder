@@ -24,7 +24,7 @@ module.exports = class DatabaseFrontEndEngine {
 		return js;
 	}
 
-	// The mangling is abstracted here, because I value clarity over cleverness.
+	// That mangling is abstracted here
 	getModelFieldMap(data) {
 		let structure = {};
 		data.modelList.map(function(aModel) {

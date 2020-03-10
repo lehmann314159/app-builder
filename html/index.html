@@ -8,19 +8,21 @@
 </head>
 <body>
 	<div id="navigation" style="display:flex">
-			<select id="modelSelect" onChange="handleSetModel()" style="margin:5px"></select>
-			<select id="documentSelect" onChange="handleSetDocument()" style="margin:5px"></select>
-			<button id="createButton" onClick="handleCreateDocument()" style="margin:5px">CREATE</button>
+			<select id="modelSelect"    onChange="handleSetModel()"      style="margin:5px"></select>
+			<select id="documentSelect" onChange="handleSetDocument()"   style="margin:5px"></select>
+			<button id="createButton"   onClick="handleCreateDocument()" style="margin:5px">CREATE</button>
 	</div>
 	<div id="content">
 		<pre id="displayContent"></pre>
 		<textarea id="modifyContent"></textarea>
 	</div>
 	<div id="actions" style="display:flex">
-		<button id="editButton" onClick="handleEditDocument()" style="margin:5px">EDIT</button>
-		<button id="deleteButton" onClick="handleDeleteDocument()" style="margin:5px">DELETE</button>
-		<button id="saveButton" onClick="handleSaveDocument()" style="margin:5px">SAVE</button>
-		<button id="cancelButton" onClick="handleCancelDocument()" style="margin:5px">CANCEL</button>
+		<button id="editButton"    onClick="handleEditDocument()"    style="margin:5px">EDIT</button>
+		<button id="deleteButton"  onClick="handleDeleteDocument()"  style="margin:5px">DELETE</button>
+		<button id="saveButton"    onClick="handleSaveDocument()"    style="margin:5px">SAVE</button>
+		<button id="replaceButton" onClick="handleReplaceDocument()" style="margin:5px">REPLACE</button>
+		<button id="patchButton"   onClick="handlePatchDocument()"   style="margin:5px">PATCH</button>
+		<button id="cancelButton"  onClick="handleCancelDocument()"  style="margin:5px">CANCEL</button>
 	</div>
 	<script src="models.js"></script>
 	<script src="main.js"></script>

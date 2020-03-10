@@ -57,9 +57,8 @@ function getDocumentTemplate(inModelName) {
 	return templateList[inModelName];
 }
 
-// templateList is generated and defined in models.js
-// yes, this is recursive
 // getDocumentHeight helps us make the textarea the right size
+// templateList is generated and defined in models.js
 function getDocumentHeight(inObject) {
 	let count = 2; // For the 2 brackets
 
@@ -128,6 +127,16 @@ function stateIsCoherent() {
 			return getModelName();
 			break;
 
+		// REPLACE requires that model is set
+		case 'REPLACE':
+			return getModelName();
+			break;
+
+		// PATCH requires that model is set
+		case 'PATCH':
+			return getModelName();
+			break;
+
 		// CANCEL requires that model is set
 		case 'CANCEL':
 			return getModelName();
@@ -157,6 +166,8 @@ function getDisplaySettings() {
 			'deleteButton':   getModelName() && getDocumentId() ? 'block' : 'none',
 			'createButton':   getModelName() ? 'block' : 'none',
 			'saveButton':     'none',
+			'replaceButton':  'none',
+			'patchButton':    'none',
 			'cancelButton':   'none'
 		};
 		break;
@@ -169,7 +180,9 @@ function getDisplaySettings() {
 			'editButton':     'none',
 			'deleteButton':   'none',
 			'createButton':   'none',
-			'saveButton':     'block',
+			'saveButton':     'none',
+			'replaceButton':  'block',
+			'patchButton':    'block',
 			'cancelButton':   'block'
 		};
 		break;
@@ -183,6 +196,8 @@ function getDisplaySettings() {
 			'deleteButton':   'none',
 			'createButton':   'none',
 			'saveButton':     'none',
+			'replaceButton':  'none',
+			'patchButton':    'none',
 			'cancelButton':   'none'
 		};
 		break;
@@ -196,6 +211,8 @@ function getDisplaySettings() {
 			'deleteButton':   'none',
 			'createButton':   'none',
 			'saveButton':     'block',
+			'replaceButton':  'none',
+			'patchButton':    'none',
 			'cancelButton':   'block'
 		};
 		break;
@@ -208,7 +225,40 @@ function getDisplaySettings() {
 			'editButton':     'none',
 			'deleteButton':   'none',
 			'createButton':   'none',
-			'saveButton':     'none'
+			'saveButton':     'none',
+			'replaceButton':  'none',
+			'patchButton':    'none',
+			'cancelButton':   'none'
+		};
+		break;
+
+		case 'REPLACE': return {
+			'modelSelect':    'block',
+			'documentSelect': 'block',
+			'displayContent': 'none',
+			'modifyContent':  'none',
+			'editButton':     'none',
+			'deleteButton':   'none',
+			'createButton':   'none',
+			'saveButton':     'none',
+			'replaceButton':  'none',
+			'patchButton':    'none',
+			'cancelButton':   'none'
+		};
+		break;
+
+		case 'PATCH': return {
+			'modelSelect':    'block',
+			'documentSelect': 'block',
+			'displayContent': 'none',
+			'modifyContent':  'none',
+			'editButton':     'none',
+			'deleteButton':   'none',
+			'createButton':   'none',
+			'saveButton':     'none',
+			'replaceButton':  'none',
+			'patchButton':    'none',
+			'cancelButton':   'none'
 		};
 		break;
 
@@ -220,9 +270,14 @@ function getDisplaySettings() {
 			'editButton':     'none',
 			'deleteButton':   'none',
 			'createButton':   'none',
-			'saveButton':     'none'
+			'saveButton':     'none',
+			'replaceButton':  'none',
+			'patchButton':    'none',
+			'cancelButton':   'none'
 		};
 		break;
+
+		default: return {}; break;
 	};
 }
 
@@ -407,6 +462,18 @@ function ajaxPutDocument() {
 	}, modifyContent.value);
 }
 
+function ajaxPatchDocument() {
+	makeRequest('PATCH', `${backEndApiServer}/${getModelName()}/${getDocumentId()}`,
+		() => {
+		if (xhr().status >= 200 && xhr().status < 300) {
+			setDocumentDetails(getDocumentId(), modifyContent.value);
+			populateDocumentSelect();
+		} else {
+			alert('The request failed!');
+		}
+	}, modifyContent.value);
+}
+
 ////////////////////
 // Event Handlers //
 ////////////////////
@@ -463,15 +530,22 @@ function handleCreateDocument() {
 // Called when saveButton is clicked
 function handleSaveDocument() {
 	// get state, set state
+	setMode('DISPLAY');
+	ajaxPostDocument();
+}
 
-	// Figure out if we're updating or creating
-	if (getMode() == 'CREATE') {
-		setMode('DISPLAY');
-		ajaxPostDocument();
-	} else {
-		setMode('DISPLAY');
-		ajaxPutDocument();
-	}
+// Called when replaceButton is clicked
+function handleReplaceDocument() {
+	// get state, set state
+	setMode('DISPLAY');
+	ajaxPutDocument();
+}
+
+// Called when replaceButton is clicked
+function handlePatchDocument() {
+	// get state, set state
+	setMode('DISPLAY');
+	ajaxPatchDocument();
 }
 
 // Called when cancelButton is clicked
