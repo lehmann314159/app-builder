@@ -92,12 +92,17 @@
 			"fields": {
 				"_id": "string",
 				"label": "string",
-				"position": "5.0",
+				"position": "number",
 				"abstractshape": "Square|Circle"
 			},
 			"example": {
 				"_id": "0123456789ABCDF1",
-				"radius":"1.5"
+				"label": "My cool concrete shape",
+				"position": "10.5",
+				"abstractshape": {
+					"_id": "8018675309FEDCBA",
+					"radius":"1.5"
+				}
 			}
 		}
 	]
